@@ -90,7 +90,7 @@ class Replenishment
   end
 end
 
-class  Buyandsell < Replenishment
+class BuyAndSell < Replenishment
   def drink_list #ステップ３のため作成
     @drink.each {|hash| 
     if hash[:price] <= @slot_money && hash[:stock] > 0
@@ -187,7 +187,7 @@ class  Buyandsell < Replenishment
   end
 end
 
-class VendingMachine < Buyandsell
+class VendingMachine < BuyAndSell
   MONEY = [10, 50, 100, 500, 1000].freeze
   def initialize
     @drink = [{name:"cola",price:120,stock:5}]
