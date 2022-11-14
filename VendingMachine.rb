@@ -1,4 +1,4 @@
-class Interface 
+class Replenishment
   def plus(drink_name,drink_price,drink_stock)
     @drink.push({name:drink_name,price:drink_price,stock:drink_stock})
   end
@@ -90,7 +90,7 @@ class Interface
   end
 end
 
-class Processing < Interface
+class  Buyandsell < Replenishment
   def drink_list #ステップ３のため作成
     @drink.each {|hash| 
     if hash[:price] <= @slot_money && hash[:stock] > 0
@@ -187,7 +187,7 @@ class Processing < Interface
   end
 end
 
-class VendingMachine < Processing
+class VendingMachine < Buyandsell
   MONEY = [10, 50, 100, 500, 1000].freeze
   def initialize
     @drink = [{name:"cola",price:120,stock:5}]
