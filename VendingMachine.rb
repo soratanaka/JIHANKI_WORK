@@ -1,27 +1,27 @@
 class Replenishment
-  def plus(drink_name,drink_price,drink_stock)
-    @drink.push({name:drink_name,price:drink_price,stock:drink_stock})
+  def plus( drink_name, drink_price, drink_stock )
+    @drink.push({ name: drink_name, price:drink_price, stock:drink_stock })
   end
 
   def drink_stock
-    @drink.each {|hash| 
-    p hash.values_at(:name,:stock)
+    @drink.each { |hash| 
+    p hash.values_at( :name, :stock )
   }
   end
 
   def replenishment(drink_name)
-    @drink.each{|hash|
+    @drink.each{ |hash|
       if hash[:name] == drink_name
         puts "補充する数を入力してください。"
         drink_stock = gets.to_i
         loop{
-        if drink_stock.positive?
-          hash[:stock] = hash[:stock] + drink_stock
-          break
-        else
-          puts "入力が違います。再度入力して下さい"
-          drink_stock = gets.to_i
-        end
+          if drink_stock.positive?
+            hash[:stock] = hash[:stock] + drink_stock
+            break
+          else
+            puts "入力が違います。再度入力して下さい"
+            drink_stock = gets.to_i
+          end
         }
       end
     }
@@ -40,7 +40,7 @@ class Replenishment
       case selection
       when "1"
         puts "ドリンクリスト："
-        @drink.each {|hash|
+        @drink.each { |hash|
           p hash[:name]
         }
         puts "どのドリンクを補充しますか？"
@@ -57,54 +57,54 @@ class Replenishment
           p "ドリンク名:#{name}、値段：#{price}、在庫数#{stock}"
           p "上記の情報で間違い無いですか(y/n)"
           answer = gets.chomp
-          if (answer == "y") then
+          if ( answer == "y" ) then
             break
           end
         end
-        plus(name,price,stock)
+        plus( name, price, stock )
       when "3"
         p "削除するドリンク名を記入してください"
         delete_drink = gets.chomp
         p "#{delete_drink}でよろしいですか(y/n)"
         answer = gets.chomp
         loop{
-        if answer == "y"
-          @drink.delete(date_catch(delete_drink)[0])
-          break
-        elsif answer == "n"
-          p "終了します"
-          break
-        else
-          p "入力が違います。再度入力してください"
-          answer = gets.chomp
-        end
-      }
+          if answer == "y"
+            @drink.delete( date_catch(delete_drink)[0] )
+            break
+          elsif answer == "n"
+            p "終了します"
+            break
+          else
+            p "入力が違います。再度入力してください"
+            answer = gets.chomp
+          end
+        }
       when "4"
         return "お疲れ様でした"
       else
-      p "入力が違います"
-      p "もう一度入力して下さい"  
-      selection = gets.chomp
-      end   
-    }
+        p "入力が違います"
+        p "もう一度入力して下さい"  
+        selection = gets.chomp
+    end   
+  }
   end
 end
 
 class BuyAndSell < Replenishment
   def drink_list #ステップ３のため作成
-    @drink.each {|hash| 
-    if hash[:price] <= @slot_money && hash[:stock] > 0
-    p hash[:name]
-    end
+    @drink.each { |hash| 
+      if hash[:price] <= @slot_money && hash[:stock] > 0
+        p hash[:name]
+      end
     }
   end
 
   def date_catch(drink_name)
-    @drink.select{|hash| hash[:name] == drink_name }
+    @drink.select{ |hash| hash[:name] == drink_name }
   end
 
   def sell_drink(drink_name)
-    hash = @drink.find {|h| h[:name].include?(drink_name)}
+    hash = @drink.find { |h| h[:name].include?(drink_name) }
     if hash[:price] <= @slot_money && hash[:stock] > 0
       hash[:stock] = hash[:stock] - 1
       @slot_money -= hash[:price]
@@ -119,21 +119,21 @@ class BuyAndSell < Replenishment
   def get_judge(drink_name)
     @drink.each {|hash| 
       p hash
-    if hash[:name] == drink_name && hash[:price] <= @slot_money && hash[:stock] > 0
-    p "ok"
-    else
-    p "NO"
-    end
-  }
+      if hash[:name] == drink_name && hash[:price] <= @slot_money && hash[:stock] > 0
+        p "ok"
+      else
+        p "NO"
+      end
+    }
   end
 
   def please_choose_drink
     puts "|ドリンクリスト|"
-    drink_names = @drink.map { |hash| hash[:name]}
-    puts drink_names
-    puts "\n"
-    puts "飲み物を選んでください"
-    input_drink = gets.chomp
+    drink_names = @drink.map { |hash| hash[:name] }
+      puts drink_names
+      puts "\n"
+      puts "飲み物を選んでください"
+      input_drink = gets.chomp
     loop{
       if drink_names.include?(input_drink)
         return input_drink
@@ -188,9 +188,9 @@ class BuyAndSell < Replenishment
 end
 
 class VendingMachine < BuyAndSell
-  MONEY = [10, 50, 100, 500, 1000].freeze
+  MONEY = [ 10, 50, 100, 500, 1000 ].freeze
   def initialize
-    @drink = [{name:"cola",price:120,stock:5}]
+    @drink = [{ name:"cola", price:120, stock:5 }]
     @money_all = 0
     @slot_money = 0
   end
@@ -205,14 +205,17 @@ class VendingMachine < BuyAndSell
   end
 
   def default
-    plus("water",100,5)
-    plus("redblue",200,5)
+    plus( "water", 100, 5 )
+    plus( "redblue", 200, 5 )
   end
 end
 
-aaa = VendingMachine.new
-aaa.default
+user = VendingMachine.new
+user.default
 puts "購入のデモ"
-aaa.buy_drink
+user.buy_drink
+
+trader = VendingMachine.new
+trader.default
 puts "補充のデモ"
-aaa.set_drink
+trader.set_drink
